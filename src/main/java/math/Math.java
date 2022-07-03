@@ -1,6 +1,7 @@
 package math;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -112,6 +113,90 @@ public class Math {
             }
         }
         return dp[0][ops.size() - 1];
+    }
+
+    /**
+     *31. 下一个排列
+     * @param nums
+     */
+    public void nextPermutation(int[] nums) {
+//        for (int i = nums.length - 1; i >= 0; i--) {
+//            for (int j = nums.length - 1; j > i; j--) {
+//                if (nums[i] < nums[j]) {
+//                    swap(nums,i,j);
+//                    Arrays.sort(nums,i+1,nums.length);
+//                    return;
+//                }
+//            }
+//        }
+//        Arrays.sort(nums);
+        // 更低时间复杂度的解决办法
+        int i = nums.length - 2;
+        while (i >= 0 && nums[i] >= nums[i+1]) {
+            i--;
+        }
+        if (i >= 0) {
+            int j = nums.length - 1;
+            while (j >= 0 && nums[i] >= nums[j]) {
+                j--;
+            }
+            swap(nums,i,j);
+        }
+        reverse(nums,i+1);
+    }
+
+    private void swap (int[] nums,int i ,int j) {
+        int numAtI = nums[i];
+        nums[i] = nums[j];
+        nums[j] = numAtI;
+    }
+
+    public void reverse(int[] nums, int start) {
+        int left = start,right = nums.length-1;
+        while (left < right) {
+            swap(nums,left,right);
+            left++;
+            right--;
+        }
+    }
+
+    /**
+     * 556. 下一个更大元素 III
+     * @param n
+     * @return
+     */
+    public int nextGreaterElement(int n) {
+        char[] nums = Integer.toString(n).toCharArray();
+        int i = nums.length - 2;
+        while (i >= 0 && nums[i] >= nums[i+1]) {
+            i--;
+        }
+        if (i < 0) {
+            return -1;
+        }
+        int j = nums.length - 1;
+        while (j >= 0 && nums[i] >= nums[j]) {
+            j--;
+        }
+        swap(nums,i,j);
+        reverse(nums, i + 1);
+        long ans = Long.parseLong(new String(nums));
+        return ans > Integer.MAX_VALUE ? -1 : (int) ans;
+    }
+
+    private void swap (char[] nums,int i ,int j) {
+        char numAtI = nums[i];
+        nums[i] = nums[j];
+        nums[j] = numAtI;
+    }
+
+    public void reverse(char[] nums, int start) {
+        int left = start,right = nums.length-1;
+        while (left < right) {
+            swap(nums,left,right);
+            left++;
+            right--;
+        }
     }
 
 }
