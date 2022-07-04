@@ -11,7 +11,6 @@ import java.util.List;
  * @Modified By:
  */
 public class Dynamic {
-
     /**
      * 871. 最低加油次数
      * @param target
