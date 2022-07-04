@@ -1,5 +1,9 @@
 package dynamic;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * @Author: liuqihong
  * @Description:
@@ -32,5 +36,31 @@ public class Dynamic {
             }
         }
         return -1;
+    }
+
+    /**
+     * 1200. 最小绝对差
+     * @param arr
+     * @return
+     */
+    public List<List<Integer>> minimumAbsDifference(int[] arr) {
+        List<List<Integer>> result = new ArrayList<>();
+        Arrays.sort(arr);
+        int i = 0,j = 1;
+        int num = Integer.MAX_VALUE;
+        while (j < arr.length) {
+            int abs = Math.abs(arr[j] - arr[i]);
+            if (abs <= num) {
+                if (abs < num) result.clear();
+                List<Integer> list = new ArrayList<>();
+                list.add(arr[i]);
+                list.add(arr[j]);
+                result.add(list);
+                num = abs;
+            }
+            i++;
+            j++;
+        }
+        return result;
     }
 }
