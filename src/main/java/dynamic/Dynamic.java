@@ -1,6 +1,7 @@
 package dynamic;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @Author: liuqihong
@@ -147,5 +148,34 @@ public class Dynamic {
             start++;
         }
         return ret.toString();
+    }
+
+    /**
+     * 648. 单词替换
+     * @param dictionary
+     * @param sentence
+     * @return
+     */
+    public String replaceWords(List<String> dictionary, String sentence) {
+        String[] s = sentence.split(" ");
+        for (int i = 0; i < s.length; i++) {
+            s[i] = isRoot(dictionary,s[i]);
+        }
+        String collect = Arrays.stream(s).collect(Collectors.joining(" "));
+        return collect;
+    }
+
+    public String isRoot(List<String> dictionary,String str) {
+        int size = Integer.MAX_VALUE;
+        String result = str;
+        for (String root : dictionary) {
+            if (str.startsWith(root)) {
+                if (size > root.length()) {
+                    size = root.length();
+                    result = root;
+                }
+            }
+        }
+        return result;
     }
 }
