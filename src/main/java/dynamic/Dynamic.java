@@ -178,4 +178,18 @@ public class Dynamic {
         }
         return result;
     }
+
+    /**
+     * 1217.玩筹码
+     * @param position
+     * @return
+     */
+    public int minCostToMoveChips(int[] position) {
+        int baseCount = 0,evenCount = 0;
+        for (int i = 0; i < position.length; i++) {
+            if (position[i] % 2 == 0) evenCount++;
+            else baseCount++;
+        }
+        return baseCount > evenCount ? evenCount : baseCount;
+    }
 }
