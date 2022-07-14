@@ -298,4 +298,66 @@ public class Dynamic {
         }
         return oddx * (n - oddy) + (m - oddx) * oddy;
     }
+
+    /**
+     * 行星碰撞
+     * @param asteroids
+     * @return
+     */
+    public static int[] asteroidCollision(int[] asteroids) {
+//        Stack<Integer> stack = new Stack<>();
+//        for (int i = 0; i < asteroids.length; i++) {
+//            if (!stack.isEmpty() && (stack.peek() > 0 && asteroids[i] < 0)) {
+//                int num = asteroids[i];
+//                while (!stack.isEmpty()) {
+//                    Integer pop = stack.pop();
+//                    if (pop + num > 0) {
+//                        stack.push(pop);
+//                        break;
+//                    }
+//                    else if (pop + num == 0) {
+//                        break;
+//                    } else {
+//                        if (stack.isEmpty() || stack.peek() < 0){
+//                            stack.push(num);
+//                            break;
+//                        }
+//                    }
+//                }
+//            } else {
+//                stack.push(asteroids[i]);
+//            }
+//        }
+//        int size = stack.size();
+//        int[] result = new int[size];
+//        for (int i = size - 1; i >= 0; i--) {
+//            result[i] = stack.pop();
+//        }
+//        return result;
+
+        // 官方题解版
+        Deque<Integer> stack = new ArrayDeque<Integer>();
+        for (int aster : asteroids) {
+            boolean alive = true;
+            while (alive && aster < 0 && !stack.isEmpty() && stack.peek() > 0) {
+                alive = stack.peek() < -aster; // aster 是否存在
+                if (stack.peek() <= -aster) {  // 栈顶行星爆炸
+                    stack.pop();
+                }
+            }
+            if (alive) {
+                stack.push(aster);
+            }
+        }
+        int size = stack.size();
+        int[] ans = new int[size];
+        for (int i = size - 1; i >= 0; i--) {
+            ans[i] = stack.pop();
+        }
+        return ans;
+    }
+
+    public static void main(String[] args) {
+        asteroidCollision(new int[]{-2,-2,1,-2});
+    }
 }
