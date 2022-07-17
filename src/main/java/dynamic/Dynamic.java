@@ -472,6 +472,55 @@ public class Dynamic {
         return queue.isEmpty();
     }
 
+    /**
+     * 565. 数组嵌套
+     * @param nums
+     * @return
+     */
+    public int arrayNesting(int[] nums) {
+        // 方法一 暴力破解法，超出时间限制
+//        int result = Integer.MIN_VALUE;
+//        for (int i = 0; i < nums.length; i++) {
+//            result = Math.max(result,arrayDfs(new HashSet<>(),nums,i));
+//        }
+//        return result;
+        // 方法二 图，找到节点个数最大的环 时间复杂度 O(N) 空间复杂度 O(N)
+//        int res = 0,n = nums.length;
+//        boolean[] flag = new boolean[n];
+//        for (int i = 0; i < n; i++) {
+//            int m = 0;
+//            while (!flag[i]) {
+//                flag[i] = true;
+//                i = nums[i];
+//                m++;
+//            }
+//            res = Math.max(res,m);
+//        }
+//        return res;
+        // 方法三 优化 原地标记
+        int res = 0,n = nums.length;
+        for (int i = 0; i < n; i++) {
+            int m = 0;
+            while (nums[i] < n) {
+                int num = nums[i];
+                nums[i] = n;
+                i = num;
+                m++;
+            }
+            res = Math.max(res,m);
+        }
+        return res;
+
+    }
+
+    public int arrayDfs(HashSet<Integer> set,int[] nums,int i) {
+        if (set.contains(nums[i])) {
+            return set.size();
+        }
+        set.add(nums[i]);
+        return arrayDfs(set,nums,nums[i]);
+    }
+
     public static void main(String[] args) {
         asteroidCollision(new int[]{-2,-2,1,-2});
     }
