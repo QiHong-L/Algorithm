@@ -408,6 +408,70 @@ public class Dynamic {
         return new Node(false, false, topLeft, topRight, bottomLeft, bottomRight);
     }
 
+    /**
+     * 11. 盛最多水的容器
+     * @param height
+     * @return
+     */
+    public int maxArea(int[] height) {
+        // 方法一 暴力求解 （超出时间预算）
+//        int sum = Integer.MIN_VALUE;
+//        for (int i = 0; i < height.length - 1; i++) {
+//            for (int j = i + 1; j < height.length; j++) {
+//                if (height[i] < height[j]) {
+//                    sum = Math.max(height[i] * (j-i),sum);
+//                } else {
+//                    sum = Math.max(height[j] *(j-i),sum);
+//                }
+//            }
+//        }
+//        return sum;
+        // 方法二 双指针
+//        int maxarea = 0,left = 0,right = height.length-1;
+//        while (left < right) {
+//            maxarea = Math.max(Math.min(height[left],height[right]) * (right - left),maxarea);
+//            if (height[left] < height[right]) {
+//                left++;
+//            } else {
+//                right--;
+//            }
+//        }
+//        return maxarea;
+        // 方法三 利用三元表达式
+        int i = 0, j = height.length - 1, res = 0;
+        while(i < j) {
+            res = height[i] < height[j] ?
+                    Math.max(res, (j - i) * height[i++]):
+                    Math.max(res, (j - i) * height[j--]);
+        }
+        return res;
+    }
+
+    /**
+     * 20. 有效的括号
+     * @param s
+     * @return
+     */
+    public boolean isValid(String s) {
+        if (s.length() % 2 != 0) return false;
+        Map<Character,Character> map = new HashMap<>();
+        map.put(')','(');
+        map.put('}','{');
+        map.put('[',']');
+        Deque<Character> queue = new LinkedList<>();
+        for (int i = 0; i < s.length(); i++) {
+            if (map.containsKey(s.charAt(i))) {
+                if (queue.isEmpty() || queue.peek() != map.get(s.charAt(i))) {
+                    return false;
+                }
+                queue.pop();
+            } else {
+                queue.push(s.charAt(i));
+            }
+        }
+        return queue.isEmpty();
+    }
+
     public static void main(String[] args) {
         asteroidCollision(new int[]{-2,-2,1,-2});
     }
