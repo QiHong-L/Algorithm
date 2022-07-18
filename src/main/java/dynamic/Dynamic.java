@@ -521,6 +521,91 @@ public class Dynamic {
         return arrayDfs(set,nums,nums[i]);
     }
 
+    static int[][] dirs = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+
+    /**
+     * 749. 隔离病毒
+     * @param isInfected
+     * @return
+     */
+    public int containVirus(int[][] isInfected) {
+        int m = isInfected.length, n = isInfected[0].length;
+        int ans = 0;
+        while (true) {
+            List<Set<Integer>> neighbors = new ArrayList<Set<Integer>>();
+            List<Integer> firewalls = new ArrayList<Integer>();
+            for (int i = 0; i < m; ++i) {
+                for (int j = 0; j < n; ++j) {
+                    if (isInfected[i][j] == 1) {
+                        Queue<int[]> queue = new ArrayDeque<int[]>();
+                        queue.offer(new int[]{i, j});
+                        Set<Integer> neighbor = new HashSet<Integer>();
+                        int firewall = 0, idx = neighbors.size() + 1;
+                        isInfected[i][j] = -idx;
+
+                        while (!queue.isEmpty()) {
+                            int[] arr = queue.poll();
+                            int x = arr[0], y = arr[1];
+                            for (int d = 0; d < 4; ++d) { // 找到病毒位置，广度收缩查找周边病毒 通过 上，下，左，右扩散
+                                int nx = x + dirs[d][0], ny = y + dirs[d][1];
+                                if (nx >= 0 && nx < m && ny >= 0 && ny < n) {
+                                    if (isInfected[nx][ny] == 1) { // 找到病毒
+                                        queue.offer(new int[]{nx, ny}); // 添加到 queue 队列
+                                        isInfected[nx][ny] = -idx; // 访问过的病毒 设置为 -idx；
+                                    } else if (isInfected[nx][ny] == 0) {  // 当前区域不是病毒
+                                        ++firewall; // 添加防火墙
+                                        neighbor.add(getHash(nx, ny));
+                                    }
+                                }
+                            }
+                        }
+                        neighbors.add(neighbor);
+                        firewalls.add(firewall); // 防火墙数量添加到 list
+                    }
+                }
+            }
+
+            if (neighbors.isEmpty()) {
+                break;
+            }
+
+            int idx = 0;
+            for (int i = 1; i < neighbors.size(); ++i) {
+                if (neighbors.get(i).size() > neighbors.get(idx).size()) {
+                    idx = i;
+                }
+            }
+            ans += firewalls.get(idx);
+            for (int i = 0; i < m; ++i) {
+                for (int j = 0; j < n; ++j) {
+                    if (isInfected[i][j] < 0) {
+                        if (isInfected[i][j] != -idx - 1) {
+                            isInfected[i][j] = 1;
+                        } else {
+                            isInfected[i][j] = 2;
+                        }
+                    }
+                }
+            }
+            for (int i = 0; i < neighbors.size(); ++i) {
+                if (i != idx) {
+                    for (int val : neighbors.get(i)) {
+                        int x = val >> 16, y = val & ((1 << 16) - 1);
+                        isInfected[x][y] = 1;
+                    }
+                }
+            }
+            if (neighbors.size() == 1) {
+                break;
+            }
+        }
+        return ans;
+    }
+
+    public int getHash(int x, int y) {
+        return (x << 16) ^ y;
+    }
+
     public static void main(String[] args) {
         asteroidCollision(new int[]{-2,-2,1,-2});
     }
