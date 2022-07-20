@@ -606,6 +606,32 @@ public class Dynamic {
         return (x << 16) ^ y;
     }
 
+    /**
+     * 1260. 二维网格迁移
+     * @param grid
+     * @param k
+     * @return
+     */
+    public List<List<Integer>> shiftGrid(int[][] grid, int k) {
+        int n = grid.length;
+        int m = grid[0].length;
+        List<List<Integer>> result = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            List<Integer> list = new ArrayList<>();
+            for (int j = 0; j < m; j++) {
+                list.add(0);
+            }
+            result.add(list);
+        }
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                int index = (i * m + j + k) % (m * n);
+                result.get(index / m).set(index % m,grid[i][j]);
+            }
+        }
+        return result;
+    }
+
     public static void main(String[] args) {
         asteroidCollision(new int[]{-2,-2,1,-2});
     }
