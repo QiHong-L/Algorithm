@@ -632,7 +632,97 @@ public class Dynamic {
         return result;
     }
 
-    public static void main(String[] args) {
+    /**
+     * c(动态规划解法)
+     * @param s
+     * @return
+     */
+    public String longestPalindrome1(String s) {
+        int len = s.length();
+        if (len < 2) return s;
+        int maxLen = 1; // 最大长度
+        int begin = 0; // 最大回文串开始下标，可以利用 begin + maxLen 计算出右边下标
+        boolean[][] dp = new boolean[len][len]; // 默认都是 false
+        // 对角线都为 true 因为单个字符就是回文串
+        for (int i = 0; i < len; i++) {
+            dp[i][i] = true;
+        }
+        // 先枚举子串长度
+        for (int L = 2; L <= len; L++) {
+            // 左边界遍历
+            for (int i = 0; i < len; i++) {
+                // 由 L 和 i 可以确定右边界，即 j - i + 1 = L 得
+                int j = L + i -1;
+                if (j >= len) {
+                    break;
+                }
+
+                if (s.charAt(i) != s.charAt(j)) {
+                    dp[i][j] = false; // 当前 左边i 和 右边j 对应的字符不相等，就将当前位置置为 false
+                } else {
+                    if (j - i < 3) {
+                        dp[i][j] = true; // 如果相等且长度<= 3 那便不用判断里面的子串是否是回文，如 a b a，不用判断 b 单个字符肯定是回文串
+                    } else {
+                        // 长度超过了3 便需要参考内部子串是否是回文了
+                        dp[i][j] = dp[i+1][j-1];
+                    }
+                }
+
+                if (dp[i][j] && j - i + 1 > maxLen) {
+                    begin = i;
+                    maxLen = j - i + 1;
+                }
+            }
+        }
+        return s.substring(begin,begin+maxLen);
+
+    }
+
+    /**
+     * 5.最长回文子串(方法二：中心扩展算法)
+     * @param s
+     * @return
+     */
+    public String longestPalindrome2(String s) {
+        if (s == null || s.length() < 1) {
+            return "";
+        }
+        int start = 0, end = 0;
+        for (int i = 0; i < s.length(); i++) {
+            // 基数中心扩散
+            int len1 = expandAroundCenter(s,i,i);
+            // 偶数中心扩散
+            int len2 = expandAroundCenter(s,i,i+1);
+            int len = Math.max(len1,len2);
+            if (len > end - start) {
+                // 通过中心值 i 和 len 长度，求start，end，假设 i = 3,len = 5;
+                // start = 3 - (5 - 1) /2 = 1;
+                // end = 3 + 5 / 2 = 5;
+                start = i - (len -1) / 2;
+                end = i + len / 2;
+            }
+        }
+        return s.substring(start,end+1);
+    }
+
+    /**
+     * 中心扩散求回文的长度
+     * @param s
+     * @param left
+     * @param right
+     * @return
+     */
+    public int expandAroundCenter(String s, int left, int right) {
+        while (left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
+            left--;
+            right++;
+        }
+        return right - left -1;
+    }
+
+
+
+        public static void main(String[] args) {
         asteroidCollision(new int[]{-2,-2,1,-2});
     }
 }
