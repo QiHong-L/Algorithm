@@ -721,6 +721,35 @@ public class Dynamic {
     }
 
 
+    class TreeNode {
+      int val;
+      TreeNode left;
+      TreeNode right;
+      TreeNode() {}
+      TreeNode(int val) { this.val = val; }
+      TreeNode(int val, TreeNode left, TreeNode right) {
+          this.val = val;
+          this.left = left;
+          this.right = right;
+      }
+    }
+
+    /**
+     * 814. 二叉树剪枝 （递归思想）
+     * @param root
+     * @return
+     * 思路：先从底部 往上删除，如果父节点是 0 左右节点也是 0 ，我们会先删除 左右节点，然后删除父节点
+     */
+    public TreeNode pruneTree(TreeNode root) {
+        if (root == null) return root; // 如果遍历到最后了直接返回
+        root.left = pruneTree(root.left); // 查找左子树
+        root.right = pruneTree(root.right); // 查找柚子树
+        if (root.val == 0 && root.left == null && root.right == null) {
+            // 如果当前节点为 0 ， 并且 左子树 和 右子树 都为null，那就删除当前节点
+            return null;
+        }
+        return root;
+    }
 
         public static void main(String[] args) {
         asteroidCollision(new int[]{-2,-2,1,-2});
