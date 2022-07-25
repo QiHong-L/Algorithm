@@ -859,7 +859,43 @@ public class Dynamic {
     }
 
 
-
+    /**
+     * 45. 跳跃游戏 II
+     * @param nums
+     * @return
+     */
+    public int jump(int[] nums) {
+        // 解法一 反向查找出发位置，次解法时间复杂度比较高，为 O(n^2)
+//        int n = nums.length - 1; // 拿到数组长度
+//        int steps = 0; // 定义计算步数变量
+//        while (n > 0) {
+//            for (int i = 0; i < n; i++) {
+//                // 从前往后找能够到达 n 的下标，贪心算法选择最左边能到达的，所以从左向右遍历，找到退出即可
+//                if (i + nums[i] >= n) {
+//                    n = i;
+//                    steps++;
+//                    break;
+//                }
+//            }
+//        }
+//        return steps;
+        /**
+         * 解法二，正向查找可达到的最大位置，时间复杂度优化 O(n)
+         * 此解法使用贪心算法，从左往右遍历，找到能跳到最远的位置即可
+         */
+        int length = nums.length;
+        int end = 0;
+        int steps = 0;
+        int maxPosition = 0;
+        for (int i = 0; i < length - 1; i++) {
+            maxPosition = Math.max(maxPosition,i+nums[i]);
+            if (i == end) {
+                end = maxPosition;
+                steps++;
+            }
+        }
+        return steps;
+    }
 
 
         public static void main(String[] args) {
