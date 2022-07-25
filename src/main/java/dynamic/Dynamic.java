@@ -789,6 +789,77 @@ public class Dynamic {
         }
     }
 
+    /**
+     * 剑指 Offer II 115. 重建序列
+     * @param nums
+     * @param sequences
+     * @return
+     */
+    public boolean sequenceReconstruction(int[] nums, int[][] sequences) {
+        int n = nums.length;
+        int[] indegrees = new int[n + 1];
+        Set<Integer>[] graph = new Set[n + 1];
+        for (int i = 1; i <= n; i++) {
+            graph[i] = new HashSet<Integer>();
+        }
+        for (int[] sequence : sequences) {
+            int size = sequence.length;
+            for (int i = 1; i < size; i++) {
+                int prev = sequence[i - 1], next = sequence[i];
+                if (graph[prev].add(next)) {
+                    indegrees[next]++;
+                }
+            }
+        }
+        Queue<Integer> queue = new ArrayDeque<Integer>();
+        for (int i = 1; i <= n; i++) {
+            if (indegrees[i] == 0) {
+                queue.offer(i);
+            }
+        }
+        while (!queue.isEmpty()) {
+            if (queue.size() > 1) {
+                return false;
+            }
+            int num = queue.poll();
+            Set<Integer> set = graph[num];
+            for (int next : set) {
+                indegrees[next]--;
+                if (indegrees[next] == 0) {
+                    queue.offer(next);
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
+     * 1184. 公交站间的距离
+     * @param distance
+     * @param start
+     * @param destination
+     * @return
+     */
+    public int distanceBetweenBusStops(int[] distance, int start, int destination) {
+        if (start > destination) { // 大小比较交换，保证 start < desitination
+            int temp = start;
+            start = destination;
+            destination = temp;
+        }
+        int n = distance.length;
+        int sum1=0,sum2=0;
+        for (int i = 0; i < n; i++) {
+            if (i >= start && i < destination) { // start <= i < destination 表示是正序的路径
+                sum1 += distance[i];
+            }else { // 逆序路径
+                sum2 += distance[i];
+            }
+        }
+        return Math.min(sum1,sum2);
+    }
+
+
+
 
 
         public static void main(String[] args) {
