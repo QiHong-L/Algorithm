@@ -942,6 +942,28 @@ public class Dynamic {
     }
 
 
+    /**
+     * 1331. 数组序号转换
+     * @param arr
+     * @return
+     */
+    public int[] arrayRankTransform(int[] arr) {
+        int[] sortArr = new int[arr.length]; // 创建排序数组，用于保存 arr 数组的排序
+        System.arraycopy(arr,0,sortArr,0,arr.length); // 使用 arraycopy方法复制给sortArr
+        Arrays.sort(sortArr); // 排序
+        HashMap<Integer,Integer> map = new HashMap<>(); // 定义统计map，相同的key只保存一次
+        for (int i = 0; i < arr.length; i++) {
+            if (!map.containsKey(sortArr[i])) {
+                map.put(sortArr[i],map.size() + 1); // 从小到大排列遍历，根据加入map的大小，计算序列号，因为从一开始，所以 map.size() +1
+            }
+        }
+        int[] ans = new int[arr.length];
+        for (int i = 0; i < arr.length; i++) {
+            ans[i] = map.get(arr[i]); // 将统计好的需要赋值给ans 数组即可
+        }
+        return ans;
+    }
+
         public static void main(String[] args) {
         asteroidCollision(new int[]{-2,-2,1,-2});
     }
