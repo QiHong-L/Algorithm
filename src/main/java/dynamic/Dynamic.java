@@ -1,5 +1,7 @@
 package dynamic;
 
+import sun.awt.image.ImageWatched;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -895,6 +897,48 @@ public class Dynamic {
             }
         }
         return steps;
+    }
+
+
+    /**
+     * 55. 跳跃游戏
+     * @param nums
+     * @return
+     */
+    public boolean canJump(int[] nums) {
+        int reach = 0,n = nums.length;
+        for (int i = 0; i < n; i++) {
+            if (i > reach) {
+                return false;
+            }
+            reach = Math.max(i + nums[i],reach);
+        }
+        return true;
+    }
+
+    /**
+     * 1190. 反转每对括号间的子串
+     * @param s
+     * @return
+     *
+     * (u(love)i)
+     */
+    public String reverseParentheses(String s) {
+        Deque<String> stack = new LinkedList<>();
+        StringBuilder str = new StringBuilder();
+        for (int i = 0; i < s.length(); i++) {
+            char ch = s.charAt(i);
+            if (ch == '(') {
+                stack.push(str.toString());
+                str.setLength(0);
+            } else if (ch == ')') {
+                str.reverse();
+                str.insert(0,stack.pop());
+            } else {
+                str.append(ch);
+            }
+        }
+        return str.toString();
     }
 
 
