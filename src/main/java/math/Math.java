@@ -252,4 +252,31 @@ public class Math {
         return (v1[0] * v2[0] + v1[1] * v2[1]) == 0;
     }
 
+    /**
+     * 有序队列
+     * @param s
+     * @param k
+     * @return
+     */
+    public String orderlyQueue(String s, int k) {
+        if (k == 1) {
+            String smallest = s;
+            StringBuilder sb = new StringBuilder(s);
+            int n = s.length();
+            for (int i = 1; i < n; i++) {
+                char c = sb.charAt(0);
+                sb.deleteCharAt(0);
+                sb.append(c);
+                if (sb.toString().compareTo(smallest) < 0) {
+                    smallest = sb.toString();
+                }
+            }
+            return smallest;
+        } else {
+            char[] arr = s.toCharArray();
+            Arrays.sort(arr);
+            return new String(arr);
+        }
+    }
+
 }
