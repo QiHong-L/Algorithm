@@ -1,5 +1,7 @@
 package stack;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.Stack;
 
 /**
@@ -46,6 +48,24 @@ public class Solution {
             }
         }
         return stack.isEmpty();
+    }
+
+    /**
+     * 1475. 商品折扣后的最终价格
+     * @param prices
+     * @return
+     */
+    public int[] finalPrices(int[] prices) {
+        int[] ans = new int[prices.length];
+        Deque<Integer> stack = new ArrayDeque<>();
+        for (int i = prices.length - 1; i > 0 ; i--) {
+            while (!stack.isEmpty() && stack.peek() > prices[i]) {
+                stack.pop();
+            }
+            ans[i] = stack.isEmpty() ? prices[i] : prices[i] - stack.peek();
+            stack.push(prices[i]);
+        }
+        return ans;
     }
 
     public static void main(String[] args) {
