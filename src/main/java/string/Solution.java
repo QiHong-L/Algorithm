@@ -1,5 +1,11 @@
 package string;
 
+import com.sun.deploy.util.StringUtils;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * @Author: liuqihong
  * @Description: 1417. 重新格式化字符串
@@ -37,4 +43,44 @@ public class Solution {
         arr[j] = c;
     }
 
+    /**
+     * 1592. 重新排列单词间的空格
+     * @param text
+     * @return
+     */
+    public static String reorderSpaces(String text) {
+        int length = text.length();
+        String[] words = text.trim().split("\\s+");
+        int cntSpace = length;
+        for (String word : words) {
+            cntSpace -= word.length();
+        }
+        StringBuilder sb = new StringBuilder();
+        if (words.length == 1) {
+            sb.append(words[0]);
+            for (int i = 0; i < cntSpace; i++) {
+                sb.append(' ');
+            }
+            return sb.toString();
+        }
+        int perSpace = cntSpace / (words.length - 1);
+        int restSpace = cntSpace % (words.length - 1);
+        for (int i = 0; i < words.length; i++) {
+            if (i > 0) {
+                for (int j = 0; j < perSpace; j++) {
+                    sb.append(' ');
+                }
+            }
+            sb.append(words[i]);
+        }
+        for (int i = 0; i < restSpace; i++) {
+            sb.append(' ');
+        }
+        return sb.toString();
+    }
+
+    public static void main(String[] args) {
+        String s = reorderSpaces(" this   is  a sentence ");
+        System.out.println(s);
+    }
 }
