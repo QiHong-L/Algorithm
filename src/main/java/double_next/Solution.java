@@ -40,4 +40,40 @@ public class Solution {
         return ans;
     }
 
+    /**
+     * 1768. 交替合并字符串
+     * @param word1
+     * @param word2
+     * @return
+     */
+    public String mergeAlternately(String word1, String word2) {
+//        int length = Math.min(word1.length(),word2.length());
+//        String result = "";
+//        for (int i = 0; i < length; i++) {
+//            result += word1.charAt(i);
+//            result += word2.charAt(i);
+//        }
+//        if (length < word1.length()) {
+//            result += word1.substring(length,word1.length());
+//        } else if (length < word2.length()) {
+//            result += word2.substring(length,word2.length());
+//        }
+//        return result;
+        int n = word1.length();
+        int m = word2.length();
+        StringBuilder str = new StringBuilder();
+        int i = 0, j = 0;
+        while (i < n || j < m) {
+            if (i < n) {
+                str.append(word1.charAt(i));
+                i++;
+            }
+            if (j < m) {
+                str.append(word2.charAt(j));
+                j++;
+            }
+        }
+        return str.toString();
+    }
+
 }
