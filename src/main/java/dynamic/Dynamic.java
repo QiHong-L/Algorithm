@@ -1,6 +1,5 @@
 package dynamic;
 
-import sun.awt.image.ImageWatched;
 
 import java.util.*;
 import java.util.stream.Collectors;
